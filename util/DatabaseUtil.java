@@ -1,5 +1,7 @@
 package util;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -44,6 +46,7 @@ public class DatabaseUtil {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			log.error(e);
 		} 		
 		return con;
 	}
@@ -78,6 +81,7 @@ public class DatabaseUtil {
 	            con.close();
 	        } catch (SQLException f) {
 	            f.printStackTrace();
+				log.error(f);
 	        }
 	    }
 		return data;
@@ -103,6 +107,7 @@ public class DatabaseUtil {
 	            con.close();
 	        } catch (SQLException f) {
 	            f.printStackTrace();
+				log.error(f);
 	        }
 	    }
 		return rset;
@@ -130,7 +135,7 @@ public class DatabaseUtil {
 	            stmt.close();
 	            con.close();
 	        } catch (SQLException f) {
-	            f.printStackTrace();
+	            log.error(f);
 	        }
 	    }
 		return data;
@@ -139,6 +144,7 @@ public class DatabaseUtil {
 	public static int executeUpdate(String queryInsertUpdate, int env) throws SQLException {
 		Connection con = con(env);
 	    PreparedStatement stmt = null;
+		log.info(queryInsertUpdate);
 	    int id = 0;
 //	    try {
 			  stmt = con.prepareStatement(queryInsertUpdate);
@@ -152,10 +158,73 @@ public class DatabaseUtil {
 	            stmt.close();
 	            con.close();
 	        } catch (SQLException f) {
-	            f.printStackTrace();
+	            log.error(f);
 	        }
 //	    }
 		return id;
 	}
+
+	public static int Backup2000(String query, Integer env, String date){
+		Connection con = con(env);
+	    Statement stmt = null;
+	    String data = "";
+		log.info(query);
+
+	    try {
+	    	stmt = con.createStatement();
+			  ResultSet rset = stmt.executeQuery(query);
+			  FileWriter fileWriter = new FileWriter("BackupSource2000/Source2000_"+date+".sql");
+			  Integer columnCount = rset.getMetaData().getColumnCount();
+
+			  while (rset.next()) {
+				StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
+
+                insertQuery.append("source_data").append(" (");
+
+                // Append column names
+                for (int i = 1; i <= columnCount; i++) {
+                    insertQuery.append(rset.getMetaData().getColumnName(i));
+                    if (i < columnCount) {
+                        insertQuery.append(", ");
+                    }
+                }
+                insertQuery.append(") VALUES (");
+
+                // Append column values
+                for (int i = 1; i <= columnCount; i++) {
+                    String value = rset.getString(i);
+                    if (value != null) {
+                        value = value.replace("'", "''"); // Escape single quotes
+                        insertQuery.append("'").append(value).append("'");
+                    } else {
+                        insertQuery.append("NULL");
+                    }
+                    if (i < columnCount) {
+                        insertQuery.append(", ");
+                    }
+                }
+                insertQuery.append(");\n");
+				log.info(insertQuery);
+
+                // Write the insert query to the file
+                fileWriter.write(insertQuery.toString());
+				fileWriter.flush();
+				
+		      }			  
+		} catch (Exception e) {
+			e.printStackTrace();
+			// TODO: handle exception
+		}finally{
+	        try {
+	            stmt.close();
+	            con.close();
+	        } catch (SQLException f) {
+	            log.error(f);
+	        }
+	    }
+		return 0;
+	}
 }
+
+
 

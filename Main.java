@@ -7,6 +7,7 @@ import java.util.concurrent.TimeUnit;
 import org.apache.log4j.Logger;
 import Services.HellperExec;
 import util.DatabaseUtil;
+import util.DateConvertion;
 import util.LogUtil;
 import util.PropertiesUtil;
 import util.ScheduleTask;
@@ -17,32 +18,46 @@ class Main {
 	private static Properties progProp = PropertiesUtil.getInstance().getProgProp();
 	private static Logger logger = LogUtil.getLogger(DatabaseUtil.class.getName());
     public static void main(String[] args ){
+
+      /*
+       * arg 0 = Date YYYYMMDD
+       * arg 1 = ENV  1=VIT|2=Staging
+       * arg 2 = MultipleDate 
+       * 
+       */
+
       HellperExec hExec = new HellperExec() ;
 
       //Integer env = Integer.parseInt(args[0]);
-      int env = 1;//VIT
+      int env = 1;//1=VIT 2=Staging
       String date = "20240614";
+      int multipleDate = 2; //1=NO 2=Yes
+      System.out.println(DateConvertion.SetDate(date, false));
+
+      //Delete Some RT_Clearing
+      //clearingRTClearing(env);
+      
 
       //Push Source 1
-      pushSourceOne(date,env);
+      pushSourceOne(date,env,multipleDate);
 
   
       //Check Source 1 Udah Naik atau belum
-      checkSourceOne(env,date);
+      checkSourceOne(env);
 
       //Run Helper
-     hExec.Run("2000",date,"1");
+      hExec.Run("2000",date,"1");
 
       
     }
 
 
-    private static void checkSourceOne(Integer env, String date){
+    private static void checkSourceOne(Integer env){
         ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(0);
 
         Runnable task = new ScheduleTask(){
           public void run(){
-            String totRemain = DatabaseUtil.selectData(progProp.getProperty("source_one_select").replace("$date", date), "totalData", env);
+            String totRemain = DatabaseUtil.selectData(progProp.getProperty("source_one_select"), "totalData", env);
             logger.info("Total Source 1 Unprocessed:"+totRemain+" Remainings");
 
             if(totRemain.equals("0")) scheduler.shutdownNow();
@@ -52,10 +67,19 @@ class Main {
         scheduler.scheduleAtFixedRate(task, 0, 1, TimeUnit.MINUTES);
     }
 
-    private static void pushSourceOne(String date, Integer env){
+    private static void pushSourceOne(String date, Integer env, Integer multipleDate){
+        String prevDate = date;
+        String nextDate = date;
+      
+      //Run before and afterr Date if argumentes return 2
+      if(multipleDate == 2){
+        prevDate = DateConvertion.SetDate(date, false);
+        nextDate = DateConvertion.SetDate(date, true);
+      }
+      
       Integer totalExcecuted = 0;
       try {
-        totalExcecuted = DatabaseUtil.executeUpdate(progProp.getProperty("push_source_one").replace("$date", date), env);
+        totalExcecuted = DatabaseUtil.executeUpdate(progProp.getProperty("push_source_one").replace("$date", date).replace("$prev_date",prevDate).replace("$next_date",nextDate), env);
         logger.info("Total Source 1 Updated reason_unprocessed: "+totalExcecuted+" Data");
       } catch (Exception e) {
         
@@ -63,9 +87,9 @@ class Main {
       
     }
 
-    private static void clearingRTClearing(){
+    private static void clearingRTClearing(Integer env){
       //Delete Processed_fee
-      //DatabaseUtil.deletedQuery(progProp.getProperty("deleteAllRT").replace("$tableName", "processed_fee"),"processed_fee", env );
+      DatabaseUtil.deletedQuery(progProp.getProperty("deleteAllRT").replace("$tableName", "processed_fee"),"processed_fee", env );
     }
 
     
