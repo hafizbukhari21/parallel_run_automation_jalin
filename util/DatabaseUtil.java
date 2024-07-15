@@ -204,7 +204,7 @@ public class DatabaseUtil {
                     }
                 }
                 insertQuery.append(");\n");
-				log.info(insertQuery);
+				
 
                 // Write the insert query to the file
                 fileWriter.write(insertQuery.toString());

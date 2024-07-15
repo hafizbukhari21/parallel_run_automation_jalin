@@ -12,6 +12,8 @@ public class backupSource2000 {
 	private static Properties progProp = PropertiesUtil.getInstance().getProgProp();
 	private static Logger logger = LogUtil.getLogger(DatabaseUtil.class.getName());
     public static void main(String[] args ){
+        logger.info("Apps By: M. Hafiz Bukhari");
+        logger.info("Jalin - ITQA");
         String date= "20240614";
         String nextDate = DateConvertion.SetDate(date, true);
         String prevDate = DateConvertion.SetDate(date, false);

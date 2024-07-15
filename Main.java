@@ -18,6 +18,8 @@ class Main {
 	private static Properties progProp = PropertiesUtil.getInstance().getProgProp();
 	private static Logger logger = LogUtil.getLogger(DatabaseUtil.class.getName());
     public static void main(String[] args ){
+      logger.info("Apps By: M. Hafiz Bukhari");
+      logger.info("Jalin - ITQA");
 
       /*
        * arg 0 = Date YYYYMMDD
@@ -29,24 +31,23 @@ class Main {
       HellperExec hExec = new HellperExec() ;
 
       //Integer env = Integer.parseInt(args[0]);
-      int env = 1;//1=VIT 2=Staging
-      String date = "20240614";
+      int env = 2;//1=VIT 2=Staging
+      String date = "20240703";
       int multipleDate = 2; //1=NO 2=Yes
-      System.out.println(DateConvertion.SetDate(date, false));
 
       //Delete Some RT_Clearing
       //clearingRTClearing(env);
       
 
-      //Push Source 1
-      pushSourceOne(date,env,multipleDate);
+      //Push Source 1 Bisa multiple Date
+      //pushSourceOne(date,env,multipleDate);
 
   
       //Check Source 1 Udah Naik atau belum
-      checkSourceOne(env);
+      //checkSourceOne(env);
 
-      //Run Helper
-      hExec.Run("2000",date,"1");
+      //Run Helper Baru Singgle Date
+      hExec.Run("2000",date,"2");
 
       
     }
@@ -90,6 +91,18 @@ class Main {
     private static void clearingRTClearing(Integer env){
       //Delete Processed_fee
       DatabaseUtil.deletedQuery(progProp.getProperty("deleteAllRT").replace("$tableName", "processed_fee"),"processed_fee", env );
+
+      //Delete transaction_data
+
+      //Delete Recon_result
+
+      //Delete Recon_source_que
+
+      //Delete Summary
+
+      //Delete process_que_batch_data
+
+      //Delete process_que_transaction
     }
 
     

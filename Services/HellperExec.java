@@ -41,6 +41,9 @@ public class HellperExec {
             // Wait for the process to complete
             int exitCode = process.waitFor();
             System.out.println("Process exited with code: " + exitCode);
+
+            // Delete Source 2000 Once Done
+            deleteSource2000();
             
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -57,5 +60,11 @@ public class HellperExec {
                 }
     }
 
+    private void deleteSource2000(){
+        
+    }
+
     
 }
+
+
