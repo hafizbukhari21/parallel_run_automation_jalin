@@ -95,7 +95,7 @@ public class DatabaseUtil {
 	    try {
 	    	stmt = con.createStatement();
 			rset = stmt.executeUpdate(query);
-			log.info("Berhasil menghapus :"+table_name);
+			log.info("Berhasil menghapus Data dari table :"+table_name);
 
 		} catch (Exception e) {
 			log.error("Error " + e.getMessage());
@@ -150,6 +150,7 @@ public class DatabaseUtil {
 			  stmt = con.prepareStatement(queryInsertUpdate);
 			  stmt.executeUpdate();
 			  id  = stmt.executeUpdate();
+			  log.info("success Update");
 //		} catch (Exception e) {
 //			e.printStackTrace();
 			// TODO: handle exception
@@ -169,17 +170,18 @@ public class DatabaseUtil {
 	    Statement stmt = null;
 	    String data = "";
 		log.info(query);
+		String envName = env==1?"VIT":"Staging Dev";
 
 	    try {
 	    	stmt = con.createStatement();
 			  ResultSet rset = stmt.executeQuery(query);
-			  FileWriter fileWriter = new FileWriter("BackupSource2000/Source2000_"+date+".sql");
+			  FileWriter fileWriter = new FileWriter("BackupSource2000/"+envName+"_Source2000_"+date+".sql");
 			  Integer columnCount = rset.getMetaData().getColumnCount();
 
 			  while (rset.next()) {
 				StringBuilder insertQuery = new StringBuilder("INSERT INTO ");
 
-                insertQuery.append("source_data").append(" (");
+                insertQuery.append("`source_data`").append(" (");
 
                 // Append column names
                 for (int i = 1; i <= columnCount; i++) {

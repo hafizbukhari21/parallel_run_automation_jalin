@@ -6,10 +6,15 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Properties;
+
+import util.DatabaseUtil;
+import util.PropertiesUtil;
 
 public class HellperExec {
-    public void Run(String source, String date, String env){
+    private Properties progProp = PropertiesUtil.getInstance().getProgProp();
 
+    public void Run(String source, String date, String env){
 
         String jarFilePath = "./HelperApp/HelperApp.jar";
         // Command to run the JAR file
@@ -43,7 +48,7 @@ public class HellperExec {
             System.out.println("Process exited with code: " + exitCode);
 
             // Delete Source 2000 Once Done
-            deleteSource2000();
+            deleteSource2000(date, Integer.parseInt(env));
             
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
@@ -60,8 +65,8 @@ public class HellperExec {
                 }
     }
 
-    private void deleteSource2000(){
-        
+    private void deleteSource2000(String date, Integer env){
+        DatabaseUtil.deletedQuery(progProp.getProperty("deleteRowData").replace("$source","2000").replace("$date", date), "source_data", env);
     }
 
     
