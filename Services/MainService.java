@@ -70,6 +70,8 @@ public class MainService {
       try {
         totalExcecuted = DatabaseUtil.executeUpdate(progProp.getProperty("push_source_one").replace("$date", date).replace("$prev_date",prevDate).replace("$next_date",nextDate), env);
         logger.info("Total Source 1 Updated reason_unprocessed: "+totalExcecuted+" Data");
+        SendTelegram.sendMessage("Total Source 1 Updated reason_unprocessed: "+totalExcecuted+" Data");
+
       } catch (Exception e) {
         
       }
@@ -84,6 +86,7 @@ public class MainService {
           public void run(){
             String totRemain = DatabaseUtil.selectData(progProp.getProperty("source_one_select"), "totalData", env);
             logger.info("Total Source 1 Unprocessed:"+totRemain+" Remainings");
+            SendTelegram.sendMessage("Total Source 1 Unprocessed:"+totRemain+" Remainings");
 
             if(totRemain.equals("0")) scheduler.shutdownNow();
           }

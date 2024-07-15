@@ -9,7 +9,7 @@ import org.json.simple.JSONObject;
 
 public class SendTelegram {
     private static final String BOT_TOKEN = "7370864657:AAF0FQfVBrg2t5oXLvlz0UlCpcdMfRrr-zQ";
-    private static final String CHAT_ID = "4210878900";
+    private static final String CHAT_ID = "-4210878900";
 
   
 
@@ -33,7 +33,7 @@ public class SendTelegram {
                 .append("\"chat_id\":\"")
                 .append(CHAT_ID)
                 .append("\",")
-                .append("\"message\":\"")
+                .append("\"text\":\"")
                 .append(message)
                 .append("\"")
                 .append("}")
@@ -47,7 +47,7 @@ public class SendTelegram {
             // }
 
             OutputStream os = conn.getOutputStream();
-            os.write(json.getBytes());
+            os.write(json.toString().getBytes());
             os.flush();
             os.close();
 

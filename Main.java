@@ -44,15 +44,14 @@ class Main {
       //MainService.clearingRTClearing(env);
       
       //Push Source 1 Bisa multiple Date
-      //MainService.pushSourceOne(date,env,multipleDate);
+      MainService.pushSourceOne(date,env,multipleDate);
 
       //Check Source 1 Udah Naik atau belum
-      //MainService.checkSourceOne(env);
+      MainService.checkSourceOne(env);
 
       //Run Helper Baru Singgle Date
       //hExec.Run("2000",date, envS);
 
-      //SendTelegram.sendMessage("Testing");
       
     }
 
