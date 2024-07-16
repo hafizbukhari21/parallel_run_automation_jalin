@@ -4,12 +4,16 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
 import org.json.simple.JSONObject;
 
+import util.PropertiesUtil;
+
 public class SendTelegram {
-    private static final String BOT_TOKEN = "7370864657:AAF0FQfVBrg2t5oXLvlz0UlCpcdMfRrr-zQ";
-    private static final String CHAT_ID = "-4210878900";
+    private static Properties progProp = PropertiesUtil.getInstance().getProgProp();
+    private static final String BOT_TOKEN =progProp.getProperty("TOKEN");
+    private static final String CHAT_ID = progProp.getProperty("chat_id") ;
 
   
 

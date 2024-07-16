@@ -31,17 +31,17 @@ class Main {
       HellperExec hExec = new HellperExec() ;
 
       //Integer env = Integer.parseInt(args[0]);
-      String envS = "2"; //1=VIT 2=Staging
+      String envS = args[1]; //1=VIT 2=Staging
       
-      String date = "20240624";
-      int multipleDate = 2; //1=NO 2=Yes
+      String date = args[0];
+      int multipleDate = Integer.parseInt(args[2]); //1=NO 2=Yes
       int env = Integer.parseInt(envS) ;
 
       //Initial Dev
-      //MainService.initial();
+      MainService.initial();
       
       //Delete Some RT_Clearing
-      //MainService.clearingRTClearing(env);
+      MainService.clearingRTClearing(env);
       
       //Push Source 1 Bisa multiple Date
       MainService.pushSourceOne(date,env,multipleDate);
@@ -50,7 +50,7 @@ class Main {
       MainService.checkSourceOne(env);
 
       //Run Helper Baru Singgle Date
-      //hExec.Run("2000",date, envS);
+      hExec.Run("2000",date, envS);
 
       
     }

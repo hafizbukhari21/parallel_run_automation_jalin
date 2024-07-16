@@ -36,6 +36,22 @@ public class DateConvertion {
         }
     }
 
+    public static String DateInputReformated(String dateStr){
+        SimpleDateFormat sourceFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat targetFormat = new SimpleDateFormat("yyyyMMdd");
+        
+        try {
+            // Parse the source date string into a Date object
+            Date date = sourceFormat.parse(dateStr);
+            
+            // Format the Date object into the target date string
+            return targetFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static String NewDateFormatPrev(String Dates){
         String NewDateFormat = NewDateFormat(Dates);
         DateTimeFormatter targetFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd");

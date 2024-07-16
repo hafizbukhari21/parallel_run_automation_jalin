@@ -8,9 +8,14 @@ import java.util.Properties;
 public class PropertiesUtil {
 	private Properties dbProp = new Properties();
 	private Properties progProp = new Properties();
+	private Properties workflowProp = new Properties();
 	
 	public Properties getProgProp() {
 		return progProp;
+	}
+
+	public Properties getworkflowProp(){
+		return workflowProp;
 	}
 
 	public void setProgProp(Properties progProp) {
@@ -23,6 +28,10 @@ public class PropertiesUtil {
 
 	public void setDbProp(Properties dbProp) {
 		this.dbProp = dbProp;
+	}
+
+	public void setworkflowProp(Properties workflowProp){
+		this.workflowProp = workflowProp;
 	}
 	
 	private static PropertiesUtil instance;
@@ -40,6 +49,7 @@ public class PropertiesUtil {
 		try {
 			dbProp.load(new FileInputStream("prop/db.properties"));
 			progProp.load(new FileInputStream("prop/program.properties"));
+			workflowProp.load(new FileInputStream("prop/workflowConfig.properties"));
 		} catch (FileNotFoundException e) {
 			System.out.println(e);
 		} catch (IOException e) {

@@ -16,7 +16,5 @@ public class Workflow {
         //Set Process Control Date
         MainService.setProsessControlDate(date, env);
 
-
-        //Run Workflow
     }
 }

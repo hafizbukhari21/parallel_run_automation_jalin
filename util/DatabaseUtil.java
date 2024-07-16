@@ -121,6 +121,7 @@ public class DatabaseUtil {
 		Connection con = con(env);
 	    Statement stmt = null;
 	    String data = "";
+		log.info(query);
 	    try {
 	    	stmt = con.createStatement();
 			  ResultSet rset = stmt.executeQuery(query);
